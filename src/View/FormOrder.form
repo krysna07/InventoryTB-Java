@@ -57,7 +57,7 @@
                       <Component id="jPanel2" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="4535" max="32767" attributes="0"/>
+              <EmptySpace pref="4495" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -213,7 +213,7 @@
                       <Component id="jLabel29" alignment="0" max="32767" attributes="0"/>
                       <Component id="User4" alignment="0" min="-2" pref="42" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="750" max="32767" attributes="0"/>
+                  <EmptySpace pref="774" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -372,11 +372,11 @@
                       </Group>
                       <Group type="102" attributes="0">
                           <Component id="btnSimpan" min="-2" pref="80" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace pref="24" max="32767" attributes="0"/>
                           <Component id="btnUbah" min="-2" pref="80" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="btnHapus" min="-2" pref="80" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnReset" min="-2" pref="80" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -390,7 +390,9 @@
                           <Component id="btnCari" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                          <Component id="btnCetakStruk" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane2" min="-2" pref="708" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -434,10 +436,11 @@
                               <Component id="btnUbah" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnReset" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnHapus" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnCetakStruk" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="772" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -630,6 +633,20 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCariActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnCetakStruk">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="eb" green="63" red="25" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SF UI  Text" size="12" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="cetak struk"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCetakStrukActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

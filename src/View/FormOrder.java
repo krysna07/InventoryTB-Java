@@ -76,6 +76,7 @@ public class FormOrder extends javax.swing.JFrame {
         txtCariNama = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         btnCari = new javax.swing.JButton();
+        btnCetakStruk = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -242,7 +243,7 @@ public class FormOrder extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(User4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(750, Short.MAX_VALUE))
+                .addContainerGap(774, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -343,6 +344,15 @@ public class FormOrder extends javax.swing.JFrame {
             }
         });
 
+        btnCetakStruk.setBackground(new java.awt.Color(37, 99, 235));
+        btnCetakStruk.setFont(new java.awt.Font("SF UI  Text", 1, 12)); // NOI18N
+        btnCetakStruk.setText("cetak struk");
+        btnCetakStruk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCetakStrukActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -362,11 +372,11 @@ public class FormOrder extends javax.swing.JFrame {
                             .addComponent(txtNama_Barang, javax.swing.GroupLayout.Alignment.LEADING, 0, 234, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                         .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -377,7 +387,9 @@ public class FormOrder extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCari))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnCetakStruk)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(80, 80, 80))
         );
@@ -411,8 +423,9 @@ public class FormOrder extends javax.swing.JFrame {
                             .addComponent(btnSimpan)
                             .addComponent(btnUbah)
                             .addComponent(btnReset)
-                            .addComponent(btnHapus))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnHapus)
+                            .addComponent(btnCetakStruk))))
+                .addContainerGap(772, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -426,7 +439,7 @@ public class FormOrder extends javax.swing.JFrame {
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(4535, Short.MAX_VALUE))
+                .addContainerGap(4495, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -501,7 +514,7 @@ public class FormOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_Barang7ActionPerformed
 
     private void Barang8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Barang8ActionPerformed
-        // TODO add your handling code here:
+//        // TODO add your handling code here:
         FormBarang FO = new FormBarang();
         FO.setVisible(true);
         this.setVisible(false);
@@ -527,6 +540,11 @@ public class FormOrder extends javax.swing.JFrame {
         FO.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_User4ActionPerformed
+
+    private void btnCetakStrukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakStrukActionPerformed
+        // TODO add your handling code here:
+        cetakStruk();
+    }//GEN-LAST:event_btnCetakStrukActionPerformed
 
     /**
      * @param args the command line arguments
@@ -697,6 +715,7 @@ public class FormOrder extends javax.swing.JFrame {
     private javax.swing.JButton Order4;
     private javax.swing.JButton User4;
     private javax.swing.JButton btnCari;
+    private javax.swing.JButton btnCetakStruk;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSimpan;
