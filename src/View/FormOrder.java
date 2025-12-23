@@ -4,15 +4,15 @@
  */
 package View;
 
-import Controller.ControllerBarang;
-import Controller.ControllerDistributor;
 import Controller.ControllerOrder;
-import Controller.ControllerUser;
-import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -474,7 +474,7 @@ public class FormOrder extends javax.swing.JFrame {
         // TODO add your handling code here:
         int row = tabelData.getSelectedRow();
         ctOrd.isiField(row);
-            
+
     }//GEN-LAST:event_tabelDataMouseClicked
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -542,8 +542,62 @@ public class FormOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_User4ActionPerformed
 
     private void btnCetakStrukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakStrukActionPerformed
-        // TODO add your handling code here:
-        cetakStruk();
+         try {
+        System.out.println("\n=== [FORM] CETAK STRUK BUTTON CLICKED ===");
+        
+        // Ambil model tabel
+        javax.swing.table.TableModel model = tabelData.getModel();
+        int rowCount = model.getRowCount();
+        
+        if (rowCount == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "⚠️ Tidak ada data order di tabel!", 
+                "Peringatan", 
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        System.out.println("Jumlah data di tabel: " + rowCount);
+        
+        // Konversi ke List<Order>
+        java.util.List<Model.Order> orders = new java.util.ArrayList<>();
+        
+        for (int i = 0; i < rowCount; i++) {
+            Model.Order order = new Model.Order();
+            
+            // Ambil data dari setiap kolom
+            // Asumsi struktur kolom: 0=ID, 1=Nama Barang, 2=Jumlah
+            order.setID_Order(Integer.parseInt(model.getValueAt(i, 0).toString()));
+            order.setNama_Barang(model.getValueAt(i, 1).toString());
+            order.setJumlah(Integer.parseInt(model.getValueAt(i, 2).toString()));
+            
+            // Jika ada kolom harga (kolom ke-3)
+            if (model.getColumnCount() > 3) {
+                try {
+                    Object hargaObj = model.getValueAt(i, 3);
+                    if (hargaObj != null) {
+                        order.setHarga(Integer.parseInt(hargaObj.toString()));
+                    }
+                } catch (Exception e) {
+                    order.setHarga(0); // Default jika tidak ada
+                }
+            }
+            
+            orders.add(order);
+            System.out.println(String.format("  Row %d: %-30s x%3d | Harga: Rp %,d", 
+                i, order.getNama_Barang(), order.getJumlah(), order.getHarga()));
+        }
+        
+        // Panggil controller untuk cetak struk
+        ctOrd.cetakStruk(orders);
+        
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "❌ Error: " + e.getMessage(), 
+            "Error", 
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_btnCetakStrukActionPerformed
 
     /**
@@ -748,7 +802,7 @@ public class FormOrder extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> txtNama_Barang;
     // End of variables declaration//GEN-END:variables
     ControllerOrder ctOrd;
-    
+
     public JTable getTabelData() {
         return tabelData;
     }
@@ -756,7 +810,7 @@ public class FormOrder extends javax.swing.JFrame {
     public JTextField gettxtID_Order() {
         return txtID_Order;
     }
-    
+
     public JComboBox gettxtNama_Barang() {
         return txtNama_Barang;
     }

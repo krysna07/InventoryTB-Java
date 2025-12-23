@@ -1,210 +1,286 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
 import Helper.KoneksiDB;
 import Model.Barang;
+import Model.Order;
+import DAOInterface.IDAOOrder;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.*;
-import java.sql.Connection;
-import DAOInterface.IDAOOrder;
-import Model.Order;
 
-/**
- *
- * @author kumil
- */
-public class DAOOrder implements IDAOOrder{
-    
-    public DAOOrder()
-    {
+public class DAOOrder implements IDAOOrder {
+
+    private Connection con;
+
+    // SQL Query Constants
+    private static final String GET_ALL_ORDERS_WITH_PRICE
+            = "SELECT p.ID_Order, p.Nama_Barang, p.Jumlah, "
+            + "COALESCE(p.Harga, b.Harga, 0) as Harga "
+            + // ← Prioritas: harga di pesan > harga di barang > 0
+            "FROM pesan p "
+            + "LEFT JOIN barang b ON p.Nama_Barang = b.Nama_Barang "
+            + "ORDER BY p.ID_Order ASC";
+    private static final String INSERT_ORDER
+            = "INSERT INTO pesan(ID_Order, Nama_Barang, Jumlah, Harga) VALUES(?,?,?,?)";
+
+    private static final String UPDATE_ORDER
+            = "UPDATE pesan SET Jumlah=?, Nama_Barang=? WHERE ID_Order=?";
+
+    private static final String DELETE_ORDER
+            = "DELETE FROM pesan WHERE ID_Order=?";
+
+    private static final String SEARCH_ORDER_WITH_PRICE
+            = "SELECT p.*, b.Harga FROM pesan p "
+            + "LEFT JOIN barang b ON p.Nama_Barang = b.Nama_Barang "
+            + "WHERE p.Nama_Barang LIKE ?";
+
+    private static final String GET_ALL_BARANG_LENGKAP
+            = "SELECT Nama_Barang, Harga, Stok, Satuan FROM barang ORDER BY Nama_Barang";
+
+    private static final String UPDATE_STOK
+            = "UPDATE barang SET stok = stok - ? WHERE nama_barang = ?";
+
+    private static final String GET_HARGA_BY_NAMA
+            = "SELECT Harga FROM barang WHERE Nama_Barang = ?";
+
+    private static final String GET_BARANG_BY_NAMA
+            = "SELECT Nama_Barang, Harga, Stok, Satuan FROM barang WHERE Nama_Barang = ?";
+
+    public DAOOrder() {
         con = KoneksiDB.getConnection();
     }
-    
-        @Override
+
+    @Override
     public List<Order> getAll() {
-        List<Order> lstOrd = null;
-        try
-        {
-            lstOrd = new ArrayList<Order>();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(strRead);
-            while(rs.next())
-            {
-                Order ord = new Order();
-                ord.setID_Order(rs.getInt("ID_Order"));
-                ord.setNama_Barang(rs.getString("Nama_Barang"));
-                ord.setJumlah(rs.getInt("Jumlah"));
-         
-                lstOrd.add(ord);
+        List<Order> orders = new ArrayList<>();
+
+        try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(GET_ALL_ORDERS_WITH_PRICE)) {
+
+            System.out.println("\n=== [DAO] LOADING SEMUA ORDER DENGAN HARGA ===");
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setID_Order(rs.getInt("ID_Order"));
+                order.setNama_Barang(rs.getString("Nama_Barang"));
+                order.setJumlah(rs.getInt("Jumlah"));
+
+                // AMBIL HARGA DARI JOIN dengan barang
+                int harga = rs.getInt("Harga");
+
+                // Cek jika harga null (karena LEFT JOIN)
+                if (rs.wasNull()) {
+                    System.out.println("[WARNING] Harga NULL untuk: " + order.getNama_Barang());
+                    harga = 0;
+                }
+
+                order.setHarga(harga);
+                orders.add(order);
+
+                System.out.printf("  - ID: %d | %-30s | Jumlah: %3d | Harga: Rp %,10d%n",
+                        order.getID_Order(),
+                        order.getNama_Barang(),
+                        order.getJumlah(),
+                        order.getHarga());
             }
+
+            System.out.println("Total order loaded: " + orders.size());
+
+        } catch (SQLException e) {
+            System.err.println("[ERROR DAO.getAll]: " + e.getMessage());
+            e.printStackTrace();
         }
-        catch(SQLException e)
-        {
-            System.err.println("Error");
-        }
-        return lstOrd;
+
+        return orders;
     }
 
     @Override
-    public boolean insert(Order o) {
-        boolean result = true;
-        PreparedStatement statement = null;
-        try
-        {
-            //statement = con.prepareStatement(strInsertID_Distributor);
+    public boolean insert(Order order) {
+        try (PreparedStatement stmt = con.prepareStatement(INSERT_ORDER)) {
+            stmt.setInt(1, order.getID_Order());
+            stmt.setString(2, order.getNama_Barang());
+            stmt.setInt(3, order.getJumlah());
+            stmt.setInt(4, order.getHarga());  // ← TAMBAHKAN INI
 
-            statement = con.prepareStatement(strInsert);
-            statement.setInt(1 , o.getID_Order());
-            statement.setString(2 , o.getNama_Barang());
-            statement.setInt(3 , o.getJumlah());
-            statement.execute();
-            
-        }catch(SQLException x)
-        {
-            System.out.println("gagal input");
-            result = false;
-        }
-        finally
-        {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("gagal input");
-                result = false;
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("[DAO] Order berhasil disimpan: " + order.getNama_Barang()
+                        + " | Harga: Rp " + order.getHarga());
+                return true;
             }
+
+        } catch (SQLException e) {
+            System.err.println("[ERROR DAO.insert]: " + e.getMessage());
         }
-        return result;
+
+        return false;
     }
 
     @Override
-    public void update(Order o) {
-        PreparedStatement statement = null;
-        try
-        {
-            statement = con.prepareStatement(strUpdate);
-            statement.setInt(1 , o.getJumlah());
-            statement.setString(2 , o.getNama_Barang());
-            statement.setInt(3 , o.getID_Order());
-            
-            statement.executeUpdate();
-        }catch(SQLException e)
-        {
-            System.out.println("gagal update");
-        }
-        finally
-        {
-            try {
-                statement.close();
-            } catch (SQLException x) {
-                System.out.println("gagal updatee");
-            }
-        }
-    }
+    public void update(Order order) {
+        try (PreparedStatement stmt = con.prepareStatement(UPDATE_ORDER)) {
+            stmt.setInt(1, order.getJumlah());
+            stmt.setString(2, order.getNama_Barang());
+            stmt.setInt(3, order.getID_Order());
 
-    @Override
-    public void delete(int ID_Order) {
-        PreparedStatement statement = null;
-        try
-        {
-            statement = con.prepareStatement(strDelete);
-            statement.setInt(1 , ID_Order);
-            statement.executeUpdate();
-        }catch(SQLException x)
-        {
-            System.out.println("gagal delete");
+            int affectedRows = stmt.executeUpdate();
+            System.out.println("[DAO] Order updated. Affected rows: " + affectedRows);
 
-        }
-        finally
-        {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                System.out.println("gagal deletee");
-            }
+        } catch (SQLException e) {
+            System.err.println("[ERROR DAO.update]: " + e.getMessage());
         }
     }
 
     @Override
-    public List<Order> getAllByName(String Nama_Barang) {
-        List<Order> lstOrd = null;
-        try
-        {
-            lstOrd = new ArrayList<Order>();
-            PreparedStatement st = con.prepareStatement(strSearch);
-            st.setString(1 , "%"+Nama_Barang+"%");
-            ResultSet rs = st.executeQuery() ;
-            while(rs.next())
-            {
-                Order ord = new Order();
-                ord.setID_Order(rs.getInt("ID_Order"));
-                ord.setNama_Barang(rs.getString("Nama_Barang"));
-                ord.setJumlah(rs.getInt("Jumlah"));
-                lstOrd.add(ord);
-            }
+    public void delete(int idOrder) {
+        try (PreparedStatement stmt = con.prepareStatement(DELETE_ORDER)) {
+            stmt.setInt(1, idOrder);
+
+            int affectedRows = stmt.executeUpdate();
+            System.out.println("[DAO] Order deleted. Affected rows: " + affectedRows);
+
+        } catch (SQLException e) {
+            System.err.println("[ERROR DAO.delete]: " + e.getMessage());
         }
-        catch(SQLException e)
-        {
-            System.err.println("Error");
-        }
-        return lstOrd;
     }
-    
+
+    @Override
+    public List<Order> getAllByName(String namaBarang) {
+        List<Order> orders = new ArrayList<>();
+
+        try (PreparedStatement stmt = con.prepareStatement(SEARCH_ORDER_WITH_PRICE)) {
+            stmt.setString(1, "%" + namaBarang + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                System.out.println("\n=== [DAO] SEARCH ORDER: " + namaBarang + " ===");
+
+                while (rs.next()) {
+                    Order order = new Order();
+                    order.setID_Order(rs.getInt("ID_Order"));
+                    order.setNama_Barang(rs.getString("Nama_Barang"));
+                    order.setJumlah(rs.getInt("Jumlah"));
+
+                    // Ambil harga dari JOIN
+                    int harga = rs.getInt("Harga");
+                    if (rs.wasNull()) {
+                        harga = 0;
+                    }
+                    order.setHarga(harga);
+
+                    orders.add(order);
+                }
+
+                System.out.println("Found " + orders.size() + " orders");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[ERROR DAO.getAllByName]: " + e.getMessage());
+        }
+
+        return orders;
+    }
+
     @Override
     public List<Barang> getAllByNama_Barang() {
-        List<Barang> lstBrg = null;
-            try
-            {
-                lstBrg = new ArrayList<Barang>();
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(strInsertNama_Barang) ;
-                while(rs.next())
-                {
-                    Barang brg = new Barang();
-                    brg.setNama_Barang(rs.getString("Nama_Barang"));
-                    lstBrg.add(brg);
+        List<Barang> barangList = new ArrayList<>();
+
+        try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(GET_ALL_BARANG_LENGKAP)) {
+
+            System.out.println("\n=== [DAO] LOADING SEMUA BARANG (UNTUK COMBOBOX) ===");
+
+            while (rs.next()) {
+                Barang barang = new Barang();
+                barang.setNama_Barang(rs.getString("Nama_Barang"));
+                barang.setHarga(rs.getInt("Harga"));
+                barang.setStok(rs.getInt("Stok"));
+                barang.setSatuan(rs.getString("Satuan"));
+
+                barangList.add(barang);
+
+                System.out.printf("  - %-30s | Harga: Rp %,10d | Stok: %4d %s%n",
+                        barang.getNama_Barang(),
+                        barang.getHarga(),
+                        barang.getStok(),
+                        barang.getSatuan());
+            }
+
+            System.out.println("Total barang: " + barangList.size());
+
+        } catch (SQLException e) {
+            System.err.println("[ERROR DAO.getAllByNama_Barang]: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return barangList;
+    }
+
+    @Override
+    public Barang getBarangDenganHarga(String namaBarang) {
+        try (PreparedStatement stmt = con.prepareStatement(GET_BARANG_BY_NAMA)) {
+            stmt.setString(1, namaBarang);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Barang barang = new Barang();
+                    barang.setNama_Barang(rs.getString("Nama_Barang"));
+                    barang.setHarga(rs.getInt("Harga"));
+                    barang.setStok(rs.getInt("Stok"));
+                    barang.setSatuan(rs.getString("Satuan"));
+
+                    System.out.println("[DAO] Barang ditemukan: " + barang.getNama_Barang()
+                            + " | Harga: Rp " + barang.getHarga());
+
+                    return barang;
+                } else {
+                    System.out.println("[DAO WARNING] Barang tidak ditemukan: " + namaBarang);
+                    return null;
                 }
             }
-            catch(SQLException e)
-            {
-                System.err.println("Error");
-            }
-            return lstBrg;    
-    }
-    
-    @Override
-    public void kurangiStok(String Nama_Barang, int jumlah) {
-        PreparedStatement statement = null;
-        try {
-            // Update query untuk mengurangi stok barang berdasarkan nama barang
-            statement = con.prepareStatement(strUpdateStok);
-            statement.setInt(1, jumlah);
-            statement.setString(2, Nama_Barang);
-            statement.executeUpdate();
+
         } catch (SQLException e) {
-            System.out.println("gagal mengurangi stok");
-        } finally {
-            try {
-                statement.close();
-            } catch (SQLException x) {
-                System.out.println("gagal mengurangi stok");
-            }
+            System.err.println("[ERROR DAO.getBarangDenganHarga]: " + e.getMessage());
+            return null;
         }
-    }   
+    }
 
-    Connection con;
-    //SQL Query
-    String strRead = "select * from pesan order by ID_Order asc;";
-    String strInsert = "insert into pesan(ID_Order, Nama_Barang, Jumlah) values(?,?,?);";
-    String strUpdate = "update pesan set Jumlah=?, Nama_Barang=? where ID_Order=?  ;";
-    String strDelete = "delete from pesan where ID_Order=?";
-    String strSearch = "select * from pesan where Nama_Barang like ?;";
-    String strInsertNama_Barang = "select Nama_Barang from barang;";
-    String strUpdateStok = "UPDATE barang SET stok = stok - ? WHERE nama_barang = ?;";
+    @Override
+    public int getHargaByNama(String namaBarang) {
+        try (PreparedStatement stmt = con.prepareStatement(GET_HARGA_BY_NAMA)) {
+            stmt.setString(1, namaBarang);
 
-     
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int harga = rs.getInt("Harga");
+                    System.out.println("[DAO] Harga ditemukan: " + namaBarang + " = Rp " + harga);
+                    return harga;
+                } else {
+                    System.out.println("[DAO WARNING] Harga tidak ditemukan untuk: " + namaBarang);
+                    return 0;
+                }
+            }
 
+        } catch (SQLException e) {
+            System.err.println("[ERROR DAO.getHargaByNama]: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    @Override
+    public void kurangiStok(String namaBarang, int jumlah) {
+        try (PreparedStatement stmt = con.prepareStatement(UPDATE_STOK)) {
+            stmt.setInt(1, jumlah);
+            stmt.setString(2, namaBarang);
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("[DAO] Stok berkurang: " + namaBarang + " -" + jumlah + " unit");
+            } else {
+                System.out.println("[DAO WARNING] Gagal mengurangi stok. Barang tidak ditemukan: " + namaBarang);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[ERROR DAO.kurangiStok]: " + e.getMessage());
+        }
+    }
 }

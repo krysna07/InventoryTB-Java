@@ -26,5 +26,7 @@ public interface IDAOOrder {
     //Combobox Nama Barang
     public List<Barang> getAllByNama_Barang();
     //kurangstok
+    Barang getBarangDenganHarga(String namaBarang);
+    int getHargaByNama(String namaBarang);
     public void kurangiStok(String Nama_Barang, int jumlah);
 }
