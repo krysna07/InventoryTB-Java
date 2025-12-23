@@ -127,7 +127,7 @@ public class FormHome extends javax.swing.JFrame {
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/TB ATA.png"))); // NOI18N
-        jLabel4.setPreferredSize(new java.awt.Dimension(800, 500));
+        jLabel4.setPreferredSize(new java.awt.Dimension(500, 500));
         jLabel4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         jLabel5.setFont(new java.awt.Font("Dialog", 3, 24)); // NOI18N

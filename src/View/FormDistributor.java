@@ -498,15 +498,12 @@ public class FormDistributor extends javax.swing.JFrame {
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
         ctDis.Insert();
-        ctDis.isiTable();
-        ctDis.reset();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void tabelDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelDataMouseClicked
         // TODO add your handling code here:
         int row = tabelData.getSelectedRow();
-        ctDis.isiField(row);
-            
+        ctDis.isiField(row);            
     }//GEN-LAST:event_tabelDataMouseClicked
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -517,21 +514,16 @@ public class FormDistributor extends javax.swing.JFrame {
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here:
         ctDis.update();
-        ctDis.isiTable();
-        ctDis.reset();
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:
         ctDis.delete();
-        ctDis.isiTable();
-        ctDis.reset();
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
         // TODO add your handling code here:
         ctDis.search();
-        ctDis.reset();
     }//GEN-LAST:event_btnCariActionPerformed
 
     private void Barang7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Barang7ActionPerformed

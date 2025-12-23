@@ -105,9 +105,9 @@ public class FormOrder extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(405, 405, 405)
-                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(328, 328, 328)
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
                 .addGap(702, 702, 702))
         );
         jPanel7Layout.setVerticalGroup(

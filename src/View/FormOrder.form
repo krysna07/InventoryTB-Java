@@ -88,9 +88,9 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                  <Component id="jLabel30" min="-2" pref="142" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="405" max="-2" attributes="0"/>
-                  <Component id="jLabel6" max="32767" attributes="0"/>
+                  <Component id="jLabel30" min="-2" pref="219" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="328" max="-2" attributes="0"/>
+                  <Component id="jLabel6" pref="209" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="702" max="-2" attributes="0"/>
               </Group>
           </Group>

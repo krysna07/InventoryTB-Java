@@ -225,7 +225,7 @@
                   <Image iconType="3" name="/View/TB ATA.png"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[800, 500]"/>
+                  <Dimension value="[500, 500]"/>
                 </Property>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
