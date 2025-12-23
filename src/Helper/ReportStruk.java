@@ -52,12 +52,12 @@ public class ReportStruk {
             Font fontSmall  = new Font(Font.HELVETICA, 9);
 
             // ===== HEADER =====
-            Paragraph title = new Paragraph("TOKO BANGUNAN MAKMUR JAYA\n", fontTitle);
+            Paragraph title = new Paragraph("TOKO BANGUNAN PETRA\n", fontTitle);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
             Paragraph alamat = new Paragraph(
-                    "Jl. Raya No. 123, Jakarta\nTelp: 021-1234567\n\n",
+                    "Jl. Jalan Sendiri\nTelp: 021-1234567\n\n",
                     fontNormal
             );
             alamat.setAlignment(Element.ALIGN_CENTER);
