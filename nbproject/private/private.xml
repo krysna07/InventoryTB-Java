@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+<<<<<<< feature/eror_handling
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
@@ -30,3 +31,11 @@
         </group>
     </open-files>
 </project-private>
+=======
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/A.%20codingan%20satya/tokobangunan/Toko%20bangunan%20petra/InventoryTB-Java/src/Helper/KoneksiDB.java</file>
+        </group>
+    </open-files>
+</project-private>
+>>>>>>> 140c90d fixsatya
