@@ -35,22 +35,21 @@ public class ControllerBarang {
     }
     
     public void Insert()
-    {
-         Barang b = new Barang();
-         b.setID_Barang(Integer.parseInt(frmBarang.gettxtID_Barang().getText()));
-         b.setID_Distributor(Integer.parseInt((String) frmBarang.gettxtID_Distributor().getSelectedItem()));
-         b.setNama_Barang(frmBarang.gettxtNama_Barang().getText());
-         b.setSatuan(frmBarang.gettxtSatuan().getText());
-         b.setHarga(Integer.parseInt(frmBarang.gettxtHarga().getText()));
-         b.setStok(Integer.parseInt(frmBarang.gettxtStok().getText()));
-         boolean res = iBarang.insert(b);
-         if(res)
-             JOptionPane.showMessageDialog(null, "Input berhasil");
-         else
-             JOptionPane.showMessageDialog(null, "Gagal/Data Duplikat");
+{
+     Barang b = new Barang();
+     b.setID_Barang(Integer.parseInt(frmBarang.gettxtID_Barang().getText()));
+     b.setID_Distributor(Integer.parseInt((String) frmBarang.gettxtID_Distributor().getSelectedItem()));
+     b.setNama_Barang(frmBarang.gettxtNama_Barang().getText());
+     b.setSatuan(frmBarang.gettxtSatuan().getText());
+     b.setHarga(Integer.parseInt(frmBarang.gettxtHarga().getText()));
+     b.setStok(Integer.parseInt(frmBarang.gettxtStok().getText()));
+     boolean res = iBarang.insert(b);
+     if(res)
+         JOptionPane.showMessageDialog(null, "Input berhasil");
+     else
+         JOptionPane.showMessageDialog(null, "Gagal/Data Duplikat");
 
-    }
-    
+}
     public void reset()
     {
         if(!frmBarang.gettxtID_Barang().isEnabled())
